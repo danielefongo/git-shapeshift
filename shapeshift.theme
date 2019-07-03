@@ -1,0 +1,34 @@
+function project_branch() {
+  if [[ $(async_git_branch) ]]; then
+    [[ "$(git rev-parse --show-toplevel)" =~ '.*/(.*)' ]] && folder=$match[1]
+    colorize "$folder" red true
+    echo -n ':'
+    async_git_branch
+  fi
+}
+
+function prompt_dir_for_git() {
+  if [[ $(async_git_branch) ]]; then
+    local rootDir="$(git rev-parse --show-toplevel)"
+    local relativeDir=${$(pwd)//$rootDir/}
+    if [[ $relativeDir ]]; then
+      colorize "${relativeDir:1}" blue true
+    fi
+  else
+    prompt_dir
+  fi
+}
+
+function async_git_position_with_fetch() {
+    if [[ -z "$(async_git_branch)" ]]
+    then
+        return
+    fi
+
+    git fetch &>/dev/null
+    async_git_position
+}
+
+SHAPESHIFT_DIR_LENGTH=5
+SHAPESHIFT_PROMPT_LEFT_ELEMENTS=(prompt_dir_for_git async_git_diffs prompt_arrow)
+SHAPESHIFT_PROMPT_RIGHT_ELEMENTS=(async_git_position_with_fetch project_branch)
