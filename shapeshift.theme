@@ -1,4 +1,4 @@
-function project_branch() {
+function git_project_branch() {
   if [[ $(git_branch) ]]; then
     [[ "$(git rev-parse --show-toplevel)" =~ '.*/(.*)' ]] && folder=$match[1]
     colorize "$folder" red true
@@ -7,16 +7,18 @@ function project_branch() {
   fi
 }
 
-function prompt_dir_for_git() {
+function git_prompt_dir_and_arrow() {
   if [[ $(git_branch) ]]; then
+    echo
     local rootDir="$(git rev-parse --show-toplevel)"
     local relativeDir=${$(pwd)//$rootDir/}
     if [[ $relativeDir ]]; then
-      colorize "${relativeDir:1}" blue true
+      colorize "${relativeDir:1} " blue true
     fi
   else
-    prompt_dir
+    print -n "$(prompt_dir) "
   fi
+  prompt_arrow
 }
 
 function git_position_with_fetch() {
@@ -30,5 +32,5 @@ function git_position_with_fetch() {
 }
 
 SHAPESHIFT_DIR_LENGTH=5
-SHAPESHIFT_PROMPT_LEFT_ELEMENTS=(prompt_dir_for_git async_git_diffs prompt_arrow)
-SHAPESHIFT_PROMPT_RIGHT_ELEMENTS=(async_git_position_with_fetch project_branch)
+SHAPESHIFT_PROMPT_LEFT_ELEMENTS=(git_project_branch async_git_diffs async_git_position_with_fetch git_prompt_dir_and_arrow)
+SHAPESHIFT_PROMPT_RIGHT_ELEMENTS=()
