@@ -10,8 +10,13 @@ function git_project_branch() {
 function git_prompt_dir_and_arrow() {
   if [[ $(git_branch) ]]; then
     echo
-    local rootDir="$(git rev-parse --show-toplevel)"
-    local relativeDir=${$(pwd)//$rootDir/}
+    local gitRootDir="$(git rev-parse --show-toplevel)"
+    local gitRootDir=$gitRootDir:l
+
+    local fullPath="$(pwd)"
+    local fullPath=$fullPath:l
+
+    local relativeDir=${fullPath//$gitRootDir/}
     if [[ $relativeDir ]]; then
       colorize "${relativeDir:1} " blue true
     fi
