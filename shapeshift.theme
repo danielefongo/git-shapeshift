@@ -39,3 +39,5 @@ function git_position_with_fetch() {
 SHAPESHIFT_DIR_LENGTH=5
 SHAPESHIFT_PROMPT_LEFT_ELEMENTS=(git_project_branch async_git_diffs async_git_position_with_fetch git_prompt_dir_and_arrow)
 SHAPESHIFT_PROMPT_RIGHT_ELEMENTS=()
+SHAPESHIFT_LS_COLORS=(boldblue boldmagenta boldgreen boldyellow boldred boldgreen boldgreen)
+SHAPESHIFT_LS_COLORS_ENABLED=true
